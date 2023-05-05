@@ -13,9 +13,9 @@
             <h1>Hello,
                 
                 <?php
-                if (isset($_SESSION["username"])) {
+                if (isset($_SESSION["UserUsername"])) {
                         
-                        echo "<span class='text-warning'>" .$_SESSION['username'] ."</span></h1>";
+                        echo "<span class='text-warning'>" .$_SESSION['UserUsername'] ."</span></h1>";
                         
                            }
                 else {
@@ -37,7 +37,7 @@
               onclick = "document.location =
               
               <?php 
-                 if (isset($_SESSION["username"])) {
+                 if (isset($_SESSION["UserUsername"])) {
                      ?>
               'addExpense.php'"
               <?php

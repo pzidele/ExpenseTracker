@@ -46,7 +46,7 @@ function passwordMatch($password, $passwordRepeat) {
 }
 
 function usernameExists($conn, $username, $email) { 
-    $sql = "SELECT * FROM Users WHERE username = ? OR email = ?;"; // use prepared statements
+    $sql = "SELECT * FROM Users WHERE UserUsername = ? OR UserEmail = ?;"; // use prepared statements
     $stmt = mysqli_stmt_init($conn);
     if (!mysqli_stmt_prepare($stmt,$sql)) {
         // send user back to signup page with error message
@@ -74,7 +74,7 @@ function usernameExists($conn, $username, $email) {
 }
 
 function createUser($conn, $name, $email, $username, $password) {
-    $sql = "INSERT INTO Users(name,email,username,password) VALUES(?,?,?,?);"; 
+    $sql = "INSERT INTO Users(UserFullName,UserEmail,UserUsername,UserPassword) VALUES(?,?,?,?);"; 
     // prepared statement
     $stmt = mysqli_stmt_init($conn);
     if (!mysqli_stmt_prepare($stmt,$sql)) {
@@ -103,16 +103,17 @@ function emptyInputAddExpense($name, $category, $amount) {
     return $result;
 }
 
-function addExpense($conn,$name,$category,$amount,$usersID) {    
-    $sql = "INSERT INTO Expenses(ExpenseName,CategoryID,ExpenseAmount,userID) VALUES(?,?,?,?);"; 
+function addExpense($conn,$name,$category,$amount,$usersID) {   
+    $sql = "INSERT INTO Expenses(ExpenseName,CategoryID,ExpenseAmount,UserID,ExpenseDate) VALUES(?,?,?,?,?);"; 
     // prepared statement
     $stmt = mysqli_stmt_init($conn);
     if (!mysqli_stmt_prepare($stmt,$sql)) {
         // send user back to addExpense page with error message
         header("location: ../addExpense.php?error=stmtfailed");
         exit();
-    } 
-    mysqli_stmt_bind_param($stmt,"ssss",$name,$category,$amount,$usersID);
+    }     
+   // $date = date('Y-m-d');
+    mysqli_stmt_bind_param($stmt,"sssss",$name,$category,$amount,$usersID,date('Y-m-d'));
     mysqli_stmt_execute($stmt);
     mysqli_stmt_close($stmt);
     header("location: ../addExpense.php?error=none");
@@ -139,7 +140,7 @@ function loginUser($conn, $username, $password) {
     }
     
     // data gets returned as assoc array
-    $passwordHashed = $usernameExists["password"];
+    $passwordHashed = $usernameExists["UserPassword"];
     $checkPassword = password_verify($password,$passwordHashed);
 
     if ($checkPassword === false) {
@@ -150,10 +151,28 @@ function loginUser($conn, $username, $password) {
         // start a session
         session_start();
         // create session variables with superglobals
-        $_SESSION["usersID"] = $usernameExists["usersID"];
-        $_SESSION["username"] = $usernameExists["username"];
+        $_SESSION["UserID"] = $usernameExists["UserID"];
+        $_SESSION["UserUsername"] = $usernameExists["UserUsername"];
         header("location: ../index.php");
         exit();
     }   
+}
+
+function getSumExpenses() {
+    require 'dbh.inc.php';
+
+    $usersID =  $_SESSION['UserID'];
+    
+    $curYear = (Integer)date('Y');
+    $curMonth = (Integer)date('m');
+
+    $query = "select sum(ExpenseAmount) As sumExpenses from Expenses where UserID=$usersID "
+            . "&& month(ExpenseDate)=$curMonth && year(ExpenseDate)=$curYear;";
+    // want to get the current month and year and only select where month and year equals that
+    $result = mysqli_query($conn,$query);
+    // Get the sum value from the query result
+    $row = mysqli_fetch_assoc($result);
+    $sum = number_format($row['sumExpenses'], 2, '.',',');
+    return $sum;
 }
 

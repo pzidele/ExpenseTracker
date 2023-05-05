@@ -10,6 +10,7 @@ if(isset($_POST["addexp"])) {
     $amount = $_POST["amount"];    
     $cat = $_POST["category"];
     
+    
     // get the id of this category
     $sql = "select CategoryID from Categories where CategoryName = '$cat';";
     $result = mysqli_query($conn, $sql);

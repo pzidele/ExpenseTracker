@@ -4,9 +4,9 @@
    
 
     // Check if the user is signed in
-    if (isset($_SESSION['usersID'])) {
+    if (isset($_SESSION['UserID'])) {
         // The user is signed in, so get their ID
-        $usersID = $_SESSION['usersID'];
+        $usersID = $_SESSION['UserID'];
     } 
     
 ?>
@@ -65,7 +65,7 @@
                     
 
                 <?php
-                    if (isset($_SESSION["username"])) {
+                    if (isset($_SESSION["UserUsername"])) {
 
                         echo "<li class='nav-item'><a class='nav-link' href='budget.php'>Budget</a></li>";
                         echo "<li class='nav-item'><a class='nav-link' href='#'>Analytics</a></li>";
