@@ -34,6 +34,38 @@ function invalidEmail($email) {
     return $result;
 }
 
+function invalidPhone($phone) {
+    $result;    
+    $phone = str_replace([' ', '.', '-', '(', ')'], '', $phone);
+    
+    //eliminate every char except 0-9
+    $justNums = preg_replace("/[^0-9]/", '', $phone);
+
+    //eliminate leading 1 if its there
+    if (strlen($justNums) == 11) {
+        $justNums = preg_replace("/^1/", '',$justNums);
+    }
+
+    //if we have 10 digits left, it's probably valid.
+    if (strlen($justNums) == 10) {
+        $result = true;
+    }
+    else {
+        $result = false;
+    }
+    
+    
+    
+    
+//    if (preg_match('/^[0-9]{10}+$/', $phone) ) {
+//        $result = true;
+//    }
+//    else {
+//        $result = false;
+//    }
+    return $result;
+}
+
 function passwordMatch($password, $passwordRepeat) {
     $result;
     if ($password !== $passwordRepeat) {
@@ -73,8 +105,8 @@ function usernameExists($conn, $username, $email) {
     mysqli_stmt_close($stmt);
 }
 
-function createUser($conn, $name, $email, $username, $password) {
-    $sql = "INSERT INTO Users(UserFullName,UserEmail,UserUsername,UserPassword) VALUES(?,?,?,?);"; 
+function createUser($conn, $name, $email, $phone, $username, $password) {
+    $sql = "INSERT INTO Users(UserFullName,UserEmail,UserNumber,UserUsername,UserPassword) VALUES(?,?,?,?,?);"; 
     // prepared statement
     $stmt = mysqli_stmt_init($conn);
     if (!mysqli_stmt_prepare($stmt,$sql)) {
@@ -85,7 +117,7 @@ function createUser($conn, $name, $email, $username, $password) {
     
     // hashing password
     $hashedPwd = password_hash($password,PASSWORD_DEFAULT);
-    mysqli_stmt_bind_param($stmt,"ssss",$name,$email,$username,$hashedPwd);
+    mysqli_stmt_bind_param($stmt,"sssss",$name,$email,$phone,$username,$hashedPwd);
     mysqli_stmt_execute($stmt);
     mysqli_stmt_close($stmt);
     header("location: ../signup.php?error=none");

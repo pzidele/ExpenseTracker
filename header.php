@@ -6,7 +6,7 @@
     // Check if the user is signed in
     if (isset($_SESSION['UserID'])) {
         // The user is signed in, so get their ID
-        $usersID = $_SESSION['UserID'];
+        $usersID = $_SESSION['UserID'];        
     } 
     
 ?>

@@ -3,6 +3,7 @@
 if(isset($_POST["submit"])) {
     $name = $_POST["name"];
     $email = $_POST["email"];
+    $phone = $_POST["phone"];
     $username = $_POST["uid"];
     $password = $_POST["password"];
     $passwordRepeat = $_POST["passwordrepeat"];
@@ -30,10 +31,13 @@ if(isset($_POST["submit"])) {
         header("location: ../signup.php?error=usernametaken");
         exit();
     }
-    // add more error handling here if want to
-    // like password length
+    if (invalidPhone($phone) !== false) {
+        header("location: ../signup.php?error=invalidphone");
+        exit();
+    }
     
-    createUser($conn,$name,$email,$username,$password);
+    
+    createUser($conn,$name,$email,$phone,$username,$password);
 }
 else {
     header("location: ../signup.php");
