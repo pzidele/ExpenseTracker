@@ -11,7 +11,12 @@ include_once 'header.php';
             <input type="tel" name="phone" placeholder="Phone Number">
             <input type="text" name="uid" placeholder="Username">
             <input type="password" name="password" placeholder="Password">
-            <input type="password" name="passwordrepeat" placeholder="Repeat password">
+            <input type="password" name="passwordrepeat" placeholder="Repeat password"><br>
+            <p>Do you want to receive messages from us?</p>
+            <input type="radio" id="yes" name="getText" value="1">
+            <label for="yes">Opt in</label>
+            <input type="radio" id="no" name="getText" value="0">
+            <label for="no">Opt out</label><br>
             <button type="submit" name="submit">Sign up!</button>
         </form>
     </div>
