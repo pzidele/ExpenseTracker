@@ -51,9 +51,7 @@ if (isset($_GET["error"])) {
         echo "<p>Fill in all fields!</p>";
     } else if ($_GET["error"] == "none") {
         echo "<p>Expense added!</p>";
-        ?>
-        <meta http-equiv="refresh" content="2;url=budget.php"> 
-        <?php
+        header("Refresh:2; url=budget.php");       
     }
 }
 ?>

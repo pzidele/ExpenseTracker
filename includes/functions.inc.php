@@ -35,19 +35,21 @@ function invalidEmail($email) {
 }
 
 function invalidPhone($phone) {
-    $result;    
+    $result;
+
     $phone = str_replace([' ', '.', '-', '(', ')'], '', $phone);
     
-    //eliminate every char except 0-9
-    $justNums = preg_replace("/[^0-9]/", '', $phone);
-
+   
+    $phone=trim($phone);
+    $phone=preg_replace("/[^0-9]/", "", $phone);
+    
     //eliminate leading 1 if its there
-    if (strlen($justNums) == 11) {
-        $justNums = preg_replace("/^1/", '',$justNums);
+    if (strlen($phone) == 11) {
+        $justNums = preg_replace("/^1/", '',$phone);
     }
-
+  
     //if we have 10 digits left, it's probably valid.
-    if (strlen($justNums) == 10) {
+    if (preg_match('/^[0-9]{10}+$/', $justNums) && strlen($justNums) == 10) {
         $result = true;
     }
     else {
@@ -55,14 +57,6 @@ function invalidPhone($phone) {
     }
     
     
-    
-    
-//    if (preg_match('/^[0-9]{10}+$/', $phone) ) {
-//        $result = true;
-//    }
-//    else {
-//        $result = false;
-//    }
     return $result;
 }
 
@@ -105,8 +99,8 @@ function usernameExists($conn, $username, $email) {
     mysqli_stmt_close($stmt);
 }
 
-function createUser($conn, $name, $email, $phone, $username, $password) {
-    $sql = "INSERT INTO Users(UserFullName,UserEmail,UserNumber,UserUsername,UserPassword) VALUES(?,?,?,?,?);"; 
+function createUser($conn, $name, $email, $phone, $getText, $username, $password) {
+    $sql = "INSERT INTO Users(UserFullName,UserEmail,UserNumber,UserSendText,UserUsername,UserPassword) VALUES(?,?,?,?,?,?);"; 
     // prepared statement
     $stmt = mysqli_stmt_init($conn);
     if (!mysqli_stmt_prepare($stmt,$sql)) {
@@ -117,11 +111,19 @@ function createUser($conn, $name, $email, $phone, $username, $password) {
     
     // hashing password
     $hashedPwd = password_hash($password,PASSWORD_DEFAULT);
-    mysqli_stmt_bind_param($stmt,"sssss",$name,$email,$phone,$username,$hashedPwd);
+    mysqli_stmt_bind_param($stmt,"ssssss",$name,$email,$phone,$getText,$username,$hashedPwd);
     mysqli_stmt_execute($stmt);
     mysqli_stmt_close($stmt);
     header("location: ../signup.php?error=none");
     exit();   
+}
+
+function modifyUserOptions($conn, $changeGetText) {
+    //require_once 'dbh.inc.php';
+    $usersID = $_SESSION['UserID'];
+    
+    $sql = "UPDATE Users SET UserSendText=$changeGetText WHERE UserID=$usersID";
+    $conn->query($sql);
 }
 
 function emptyInputAddExpense($name, $category, $amount) {
