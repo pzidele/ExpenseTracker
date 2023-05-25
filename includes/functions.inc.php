@@ -114,7 +114,21 @@ function createUser($conn, $name, $email, $phone, $getText, $username, $password
     mysqli_stmt_bind_param($stmt,"ssssss",$name,$email,$phone,$getText,$username,$hashedPwd);
     mysqli_stmt_execute($stmt);
     mysqli_stmt_close($stmt);
+    
+    // After the new user is successfully inserted into the database
+    //$userPhoneNumber = $_POST['phone']; 
+
+    // Make an HTTP POST request to send_sms.php
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, 'http://localhost/expenseTracker/send_text.php'); 
+    curl_setopt($ch, CURLOPT_POST, 1);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, 'phone=' . urlencode($phone));
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    $response = curl_exec($ch);
+    curl_close($ch);
+    
     header("location: ../signup.php?error=none");
+    
     exit();   
 }
 
