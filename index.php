@@ -102,23 +102,7 @@ include_once 'header.php';
                     </div>
                 </div>
             </div>
-            <div class="col-md">
-                <div class="card bg-secondary text-light">
-                    <div class="card-body text-center">
-                        <div class="h1 mb-3">
-        <!--                  <i class="bi bi-bar-chart"></i>-->
-                        </div>
-                        <img  src="images/analytics.png" width ="90" height ="90" alt=""/>
-
-                        <h3 class="card-title mb-3">Analytics</h3>
-                        <p class="card-text">
-                            Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                            Iure, quas quidem possimus dolorum esse eligendi?
-                        </p>
-                        <button type="button" class="btn btn-light">View</button>
-                    </div>
-                </div>
-            </div>
+            
         </div>
     </div>
 </section>
