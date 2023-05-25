@@ -23,8 +23,11 @@ include_once 'header.php';
 
 
                     <p class="lead my-4">
-                        We focus on teaching our students the fundamentals of the latest
-                        and greatest technologies to prepare them for their first dev role
+                    Do you struggle to manage your spending? Have you ever looked at your bank account and were surprised at the number there? 
+<br><br>We’ve got the perfect solution for you! With our expense tracker website, you will no longer have to worry about reaching rock bottom in your bank account. 
+<br><br>Say goodbye to financial stress and start tracking your expenses with the Expense Tracker Website.
+
+
                     </p>
                     <button
                         class="btn btn-warning btn-lg"
@@ -34,7 +37,7 @@ include_once 'header.php';
                             <?php
                             if (isset($_SESSION["UserUsername"])) {
                                 ?>
-                                    'addExpense.php'"
+                                    'budget.php'"
                             <?php
                         } else {
                             ?>
@@ -75,10 +78,32 @@ include_once 'header.php';
                         </div>
                         <h3 class="card-title mb-3">Budget</h3>
                         <p class="card-text">
-                            Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                            Iure, quas quidem possimus dolorum esse eligendi?
+                            Document your expenses to stay on top of your spending!
                         </p>
-                        <button type="button" class="btn btn-light" onclick = "document.location = 'budget.php'">Start Budgeting</button>
+                        
+                        <button 
+                            type="button" 
+                            class="btn btn-light" 
+                            onclick = "document.location = 
+                            
+                            <?php
+                            if (isset($_SESSION["UserUsername"])) {
+                                ?>
+                                    'budget.php'"
+                            <?php
+                        } else {
+                            ?>
+                            'signup.php'"
+
+                            <?php
+                        }
+                        ?>   
+                        > 
+                            
+                        Start Budgeting
+                        </button>
+                   
+                    
                     </div>
                 </div>
             </div>
@@ -94,28 +119,10 @@ include_once 'header.php';
                         </div>
                         <h3 class="card-title mb-3">Reminders</h3>
                         <p class="card-text">
-                            Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                            Iure, quas quidem possimus dolorum esse eligendi?
+                            Get monthly texts with a friendly reminder of how much you've spent that month!
                         </p>
-                        <button type="button" class="btn btn-light">Set My Reminders</button>
+                        <button type="button" class="btn btn-light" onclick="document.location = 'account.php'">Set My Reminders</button>
 
-                    </div>
-                </div>
-            </div>
-            <div class="col-md">
-                <div class="card bg-secondary text-light">
-                    <div class="card-body text-center">
-                        <div class="h1 mb-3">
-        <!--                  <i class="bi bi-bar-chart"></i>-->
-                        </div>
-                        <img  src="images/analytics.png" width ="90" height ="90" alt=""/>
-
-                        <h3 class="card-title mb-3">Analytics</h3>
-                        <p class="card-text">
-                            Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                            Iure, quas quidem possimus dolorum esse eligendi?
-                        </p>
-                        <button type="button" class="btn btn-light">View</button>
                     </div>
                 </div>
             </div>
@@ -123,19 +130,7 @@ include_once 'header.php';
     </div>
 </section>
 
-<!-- Newsletter -->
-<section class="bg-primary text-light p-5">
-    <div class="container">
-        <div class="d-md-flex justify-content-between align-items-center">
-            <h3 class="mb-3 mb-md-0">Sign Up To Receive Weekly Money Tips!</h3>
 
-            <div class="input-group news-input">
-                <input type="text" class="form-control" placeholder="Enter Email" />
-                <button class="btn btn-dark btn-lg" type="button">Submit</button>
-            </div>
-        </div>
-    </div>
-</section>
 
 <?php
 include_once 'footer.php';
