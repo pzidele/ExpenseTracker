@@ -126,6 +126,10 @@ include_once 'header.php';
                     </div>
                 </div>
             </div>
+<<<<<<< HEAD
+=======
+            
+>>>>>>> e7713c2d580f11eada9ca6e8bb822b4191bb2256
         </div>
     </div>
 </section>
