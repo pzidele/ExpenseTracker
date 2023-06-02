@@ -1,5 +1,5 @@
 <?php
-
+use Twilio\Rest\Client;
 function emptyInputSignup($name, $email, $username, $password, $passwordRepeat) {
     $result;
     if (empty($name) || empty($email) || empty($username) || empty($password) || empty($passwordRepeat)) {
@@ -116,21 +116,36 @@ function createUser($conn, $name, $email, $phone, $getText, $username, $password
     mysqli_stmt_close($stmt);
     
     // After the new user is successfully inserted into the database
-    //$userPhoneNumber = $_POST['phone']; 
+    $userMessage = 'Welcome to the Expense Tracker Website! Thanks for signing up!'; 
 
-    // Make an HTTP POST request to send_sms.php
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, 'http://localhost/expenseTracker/send_text.php'); 
-    curl_setopt($ch, CURLOPT_POST, 1);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, 'phone=' . urlencode($phone));
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    $response = curl_exec($ch);
-    curl_close($ch);
+    // Call the sendText function to send the text message
+    sendText($phone, $userMessage);
     
     header("location: ../signup.php?error=none");
     
     exit();   
 }
+
+
+function sendText($phoneNumber, $message) {
+    require_once  '../vendor/autoload.php';
+
+    $accountSid = 'AC472684af8877904a3a87c2c401c4e981';
+    $authToken = '59a8227a8b3c169578792cc57d011b35';
+    $twilioNumber = '+18445922502'; 
+    
+    $client = new Client($accountSid, $authToken);
+
+    $client->messages->create(
+        $phoneNumber,
+        [
+            'from' => $twilioNumber,
+            'body' => $message
+        ]
+    );
+}  
+    
+    
 
 function modifyUserOptions($conn, $changeGetText) {
     //require_once 'dbh.inc.php';
@@ -160,7 +175,7 @@ function addExpense($conn,$name,$category,$amount,$usersID) {
         header("location: ../addExpense.php?error=stmtfailed");
         exit();
     }     
-   // $date = date('Y-m-d');
+   
     mysqli_stmt_bind_param($stmt,"sssss",$name,$category,$amount,$usersID,date('Y-m-d'));
     mysqli_stmt_execute($stmt);
     mysqli_stmt_close($stmt);
